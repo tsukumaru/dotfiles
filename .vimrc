@@ -155,6 +155,9 @@ set laststatus=2
 "\%02.2B: HEX
 set statusline=%F%m%r%h%w\ [TYPE=%Y]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 
+"クリップボードにコピーを有効
+set clipboard=unnamed,autoselect
+
 augroup BUFWRITE_POSTDELETE
 	au!
 	autocmd BufWritePOST * call BufWritePostDelete()
