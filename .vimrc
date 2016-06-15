@@ -15,12 +15,62 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
 NeoBundle 'Shougo/neocomplete'
-NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle  'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'miyakogi/seiya.vim'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-surround'
+
+"for vim-surround
+"任意のキーに割り当てられる
+"1(!の意味)に<!-- -->を割り当てた
+let g:surround_{char2nr("1")} = "<!--\r-->"
+nm <Leader>1 ysiw1
+nm <Leader><Leader>1 yss1
+xm <Leader>1 S1
+"カーソル下の単語のsurrounding
+nm <Leader>{ ysiw{
+nm <Leader>} ysiw}
+nm <Leader>[ ysiw[
+nm <Leader>] ysiw]
+nm <Leader>( ysiw(
+nm <Leader>) ysiw)
+nm <Leader>< ysiw<
+nm <Leader>> ysiw>
+nm <Leader>" ysiw"
+nm <Leader>' ysiw'
+nm <Leader>` ysiw`
+nm <Leader>* ysiw*
+"カーソル下の行のsurrounding
+nm <Leader><Leader>{ yss{
+nm <Leader><Leader>} yss}
+nm <Leader><Leader>[ yss[
+nm <Leader><Leader>] yss]
+nm <Leader><Leader>( yss(
+nm <Leader><Leader>) yss)
+nm <Leader><Leader>< yss<
+nm <Leader><Leader>> yss>
+nm <Leader><Leader>" yss"
+nm <Leader><Leader>' yss'
+nm <Leader><Leader>` yss`
+nm <Leader><Leader>* yss*
+"ビジュアルモードで選択時のsurrounding
+xm { S{
+xm } S}
+xm [ S[
+xm ] S]
+xm ( S(
+xm ) S)
+xm < S<
+xm > S>
+xm " S"
+xm ' S'
+xm ` S`
+xm * S*
+" **2つでかこめる**
+xm <Leader>* S*gvS*
 
 " You can specify revision/branch/tag.
 NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
