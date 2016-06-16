@@ -22,7 +22,7 @@ NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'miyakogi/seiya.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
-
+NeoBundle 'mattn/sonictemplate-vim'
 "for vim-surround
 "任意のキーに割り当てられる
 "1(!の意味)に<!-- -->を割り当てた
