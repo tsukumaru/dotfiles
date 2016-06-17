@@ -16,6 +16,43 @@ cdls ()
 }
 alias cd='cdls'
 
+#pecoでコマンド履歴検索
+function peco-select-history() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(\history -n 1 | \
+    eval $tac | \
+    peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N peco-select-history
+bindkey '^r' peco-select-history
+
+#pecoでディレクトリ履歴から移動
+function peco-z-search
+{
+    which peco z > /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Please install peco and z"
+        return 1
+    fi
+    local res=$(z | sort -rn | cut -c 12- | peco)
+    if [ -n "$res" ]; then
+        BUFFER+="cd $res"
+        zle accept-line
+    else
+        return 1
+    fi
+}
+zle -N peco-z-search
+bindkey '^f' peco-z-search
+
+
 re-prompt() {
 zle .reset-prompt
 zle .accept-line
@@ -61,4 +98,7 @@ PROMPT="%{${fg[white]}%} (%*) %{${fg[magenta]}%} %m %{${fg[cyan]}%} %~ %1(v|%F{g
 #RPROMPT="%{$fg[white]%(?..$bg[red])%} $history[$((HISTCMD-1))] %{$reset_color%}"
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
-
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/.anyenv/envs/goenv/gocode
+export PATH=$PATH:$GOPATH/bin
+source ~/.zsh.d/z.sh
