@@ -74,28 +74,28 @@ export LS_COLORS='di=33:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46
 # ファイル補完候補に色を付ける
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
 # VCSの情報を取得するzshの便利関数 vcs_infoを使う
 autoload -Uz vcs_info
 autoload -Uz colors
 colors
 
-setopt promptsubst
+setopt prompt_subst
+setopt transient_rprompt
+precmd () { vcs_info }
 
 # 表示フォーマットの指定
-# %b ブランチ情報
-# %a アクション名(mergeなど)
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
 zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
-zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
-zstyle ':vcs_info:*' actionformats '[%b|%a]'
-precmd () { vcs_info }
+zstyle ':vcs_info:git:*' formats '%F{green}%c%u[%b]%f'
+zstyle ':vcs_info:git:*' actionformats '[%b|%a]'
 
-
-PROMPT="%{${fg[white]}%} (%*) %{${fg[magenta]}%} %m %{${fg[cyan]}%} %~ %1(v|%F{green}%1v%f|) %{${reset_color}%}
+PROMPT="%{${fg[white]}%} (%*) %{${fg[magenta]}%} %m %{${fg[cyan]}%} %~ %{${reset_color}%}\$vcs_info_msg_0_
 %{${fg[green]}%}♪ Ｌ( ＾ω ＾ )┘ Ｌ( ＾ω ＾ )┘♪ %{${reset_color}%} $ "
 
 RPROMPT="%{$fg[white]%(?..$bg[red])%} \$history[\$((\$HISTCMD-1))] %{$reset_color%}"
+
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
 export GOROOT=/usr/local/go
