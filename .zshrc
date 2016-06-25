@@ -97,7 +97,7 @@ zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
 zstyle ':vcs_info:git:*' formats '%F{green}%c%u[%b]%f'
 zstyle ':vcs_info:git:*' actionformats '[%b|%a]'
 
-PROMPT="%{${fg[white]}%} (%*) %{${fg[magenta]}%} %m %{${fg[cyan]}%} %~ %{${reset_color}%}\$vcs_info_msg_0_
+PROMPT="%{${fg[white]}%} (%*) %{${fg[magenta]}%} %M %{${fg[cyan]}%} %~ %{${reset_color}%}\$vcs_info_msg_0_
 %{${fg[green]}%}♪ Ｌ( ＾ω ＾ )┘ Ｌ( ＾ω ＾ )┘♪ %{${reset_color}%} $ "
 
 RPROMPT="%{$fg[white]%(?..$bg[red])%} \$history[\$((\$HISTCMD-1))] %{$reset_color%}"
