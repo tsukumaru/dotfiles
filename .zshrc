@@ -95,10 +95,12 @@ precmd () { vcs_info }
 PROMPT="%{${fg[white]}%} (%*) %{${fg[magenta]}%} %m %{${fg[cyan]}%} %~ %1(v|%F{green}%1v%f|) %{${reset_color}%}
 %{${fg[green]}%}♪ Ｌ( ＾ω ＾ )┘ Ｌ( ＾ω ＾ )┘♪ %{${reset_color}%} $ "
 
-#RPROMPT="%{$fg[white]%(?..$bg[red])%} $history[$((HISTCMD-1))] %{$reset_color%}"
+RPROMPT="%{$fg[white]%(?..$bg[red])%} \$history[\$((\$HISTCMD-1))] %{$reset_color%}"
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/.anyenv/envs/goenv/gocode
 export PATH=$PATH:$GOPATH/bin
+
+# z.shのインストール
 source ~/.zsh.d/z.sh
