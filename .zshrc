@@ -14,7 +14,6 @@ export EDITOR=vim
 
 #lsの色付け
 export LSCOLORS=dxfxcxdxbxegedabagacad
-alias ls="ls -G"
 # LS_COLORSを設定しておく
 export LS_COLORS='di=33:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 
@@ -33,6 +32,7 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias pu='pushd'
 alias pp='popd'
+alias ls="ls -F"
 alias la='ls -a'
 #cdしたときに自動的にls -a
 cdls ()
