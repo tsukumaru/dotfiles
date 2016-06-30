@@ -32,7 +32,18 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias pu='pushd'
 alias pp='popd'
-alias ls="ls -F"
+
+case "${OSTYPE}" in
+darwin*)
+    # Mac
+    alias ls="ls -GF"
+    ;;
+linux*)
+    # Linux
+    alias ls='ls -F --color'
+    ;;
+esac
+
 alias la='ls -a'
 #cdしたときに自動的にls -a
 cdls ()
