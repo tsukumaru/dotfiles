@@ -28,8 +28,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 #===alias===
 alias tm='tmux'
 alias tma='tmux a'
-alias ...='cd ../..'
-alias ....='cd ../../..'
 alias pu='pushd'
 alias pp='popd'
 
@@ -45,12 +43,17 @@ linux*)
 esac
 
 alias la='ls -a'
-#cdしたときに自動的にls -a
+#cdしたときに自動的にls -a($HOMEに来たときを除く)
 cdls ()
 {
-  \cd "$@" && ls -a
+    \cd "$@"
+    if [ $PWD != $HOME ]; then
+        ls -a
+    fi
 }
 alias cd='cdls'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 #======
 
 #===peco===
