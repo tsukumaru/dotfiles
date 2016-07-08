@@ -1,0 +1,13 @@
+[alias]
+    st = status
+    ado = add .
+    co = commit
+    po = push origin
+
+    br = branch
+    ch = checkout
+    cb = "!f () { git checkout -b $1 origin/$1;};f"
+
+    cl = clone
+    fe = fetch
+
