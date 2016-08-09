@@ -52,6 +52,21 @@ cdls ()
     fi
 }
 alias cd='cdls'
+
+setopt BASH_REMATCH
+cdp ()
+{
+    if [ $# = 0 ]; then
+        if [[ $PWD =~ project\/([a-zA-Z0-9_\-]*)\/.*$ ]]; then
+            cd ~/project/$BASH_REMATCH[2]
+        else
+            cd ~/project
+        fi
+    else
+        cd ~/project/$1
+    fi
+}
+alias cdp='cdp'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 #======
@@ -123,7 +138,13 @@ eval "$(anyenv init -)"
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/.anyenv/envs/goenv/gocode
 export PATH=$PATH:$GOPATH/bin
+if [ -x "`which direnv`" ]; then
+        eval "$(direnv hook zsh)"
+fi
 #======
 
 # z.shのインストール
 source ~/.zsh.d/z.sh
+
+#.zshrc.localの読み込み
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
