@@ -11,3 +11,4 @@
     cl = clone
     fe = fetch
 
+    creset = reset --hard HEAD^
