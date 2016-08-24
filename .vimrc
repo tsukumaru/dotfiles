@@ -22,7 +22,7 @@ NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'miyakogi/seiya.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'mattn/sonictemplate-vim'
+
 "for vim-surround
 "任意のキーに割り当てられる
 "1(!の意味)に<!-- -->を割り当てた
@@ -160,7 +160,58 @@ endif
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-"End-----------------------------
+"End Neocomplete-----------------------------
+
+" vimのtab機能------------------------------
+" Anywhere SID.
+function! s:SID_PREFIX()
+    return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
+
+" Set tabline.
+function! s:my_tabline()  "{{{
+    let s = ''
+    for i in range(1, tabpagenr('$'))
+        let bufnrs = tabpagebuflist(i)
+        let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
+        let no = i  " display 0-origin tabpagenr.
+        let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
+        let title = fnamemodify(bufname(bufnr), ':t')
+        let title = '[' . title . ']'
+        let s .= '%'.i.'T'
+        let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
+        let s .= no . ':' . title
+        let s .= mod
+        let s .= '%#TabLineFill# '
+    endfor
+    let s .= '%#TabLineFill#%T%=%#TabLine#'
+    return s
+endfunction "}}}
+let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
+set showtabline=1 " 常にタブラインを表示
+
+" The prefix key.
+nnoremap    [Tag]   <Nop>
+nmap    t [Tag]
+" Tab jump
+for n in range(1, 9)
+    execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
+endfor
+" t1
+" で1番左のタブ、t2
+" で1番左から2番目のタブにジャンプ
+
+map <silent> [Tag]c :tablast <bar> tabnew<CR>
+" tc
+" 新しいタブを一番右に作る
+map <silent> [Tag]x :tabclose<CR>
+" tx
+" タブを閉じる
+map <silent> [Tag]n :tabnext<CR>
+" tn 次のタブ
+map <silent> [Tag]p :tabprevious<CR>
+" tp 前のタブ
+" End tab機能-------------------------------
 
 "vi互換をキャンセル
 set nocompatible
@@ -177,8 +228,6 @@ set number
 
 set title
 
-set tabstop=4
-
 syntax on
 
 "hi Comment ctermfg=red
@@ -191,11 +240,20 @@ hi LineNr ctermfg=Cyan
 
 set incsearch
 
+set tabstop=4
+
 set shiftwidth=4
 
 set expandtab
 
+set autoindent
 set smartindent
+
+augroup fileTypeIndent
+    autocmd!
+    autocmd BufNewFile,BufRead *.pm setlocal tabstop=4 shiftwidth=4
+    autocmd BufNewFile,BufRead *.html setlocal tabstop=2 shiftwidth=2
+augroup END
 
 set whichwrap=b,s,h,l,<,>,[,]
 
