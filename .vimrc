@@ -22,6 +22,10 @@ NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'miyakogi/seiya.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-commentary'
+NeoBundle 'https://github.com/othree/eregex.vim'
 
 "for vim-surround
 "任意のキーに割り当てられる
@@ -252,8 +256,13 @@ set smartindent
 augroup fileTypeIndent
     autocmd!
     autocmd BufNewFile,BufRead *.pm setlocal tabstop=4 shiftwidth=4
+    autocmd BufNewFile,BufRead *.pl setlocal tabstop=4 shiftwidth=4
+    autocmd BufNewFile,BufRead *.sql setlocal tabstop=4 shiftwidth=4
     autocmd BufNewFile,BufRead *.html setlocal tabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.yaml setlocal tabstop=2 shiftwidth=2
 augroup END
+
+au BufNewFile,BufRead *.t setf perl
 
 set whichwrap=b,s,h,l,<,>,[,]
 
@@ -277,7 +286,7 @@ function! BufWritePostDelete()
 		let crlen = &ff=='dos'?2:1
 	endif
 	if getfsize(expand('%:p'))<=crlen
-		call delete(expand('%:p'))
+        call delete(expand('%:p'))
 	endif
 endfunction
 
@@ -290,3 +299,6 @@ set scrolloff=100
 
 "行末の空白自動削除
 autocmd BufWritePre * :%s/\s\+$//ge
+
+" 定義元に飛ぶときに選択できる
+"nnoremap <C-]> g<C-]>

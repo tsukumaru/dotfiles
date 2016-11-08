@@ -1,7 +1,7 @@
 [alias]
     st = status
     ado = add .
-    co = commit
+    co = commit -v
     po = push origin
 
     br = branch
