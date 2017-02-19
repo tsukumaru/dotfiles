@@ -12,3 +12,16 @@
     fe = fetch
 
     creset = reset --hard HEAD^
+
+    ok = "!f () {\
+        current=`git rev-parse --abbrev-ref HEAD`;\
+        base="master";\
+        if [ $# -ge 1 ] ; then \
+            current=$1;\
+            if [ $# -ge 2 ] ; then \
+                base=$2;\
+            fi;\
+        fi;\
+        git checkout $base;\
+        git br -D $current;\
+    };f"
