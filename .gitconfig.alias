@@ -3,6 +3,7 @@
     ado = add .
     co = commit -v
     po = push origin
+    purr = "!f () { git pull; git fetch --prune; };f"
 
     br = branch
     ch = checkout
