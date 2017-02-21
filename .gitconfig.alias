@@ -11,6 +11,11 @@
     chm = "!f () { git checkout master; };f"
     bh = "!f () { git branch $1; git checkout $1; };f"
     cb = "!f () { git checkout -b $1 origin/$1;};f"
+    edit = branch --edit-description
+    des = "!f () {\
+        current=`git rev-parse --abbrev-ref HEAD`;\
+        git config branch.$current.description;\
+    };f"
 
     cl = clone
     fe = fetch
