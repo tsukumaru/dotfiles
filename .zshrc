@@ -1,3 +1,5 @@
+export LANG=ja_JP.UTF-8
+
 #^a, -eで移動できるように
 bindkey -e
 
@@ -107,9 +109,33 @@ function peco-z-search
 }
 zle -N peco-z-search
 bindkey '^f' peco-z-search
+
+#pecoでブランチ選択
+function peco-branch () {
+    local branch=$(git branch | peco | tr -d ' ' | tr -d '*')
+    if [ -n "$branch" ]; then
+      if [ -n "$LBUFFER" ]; then
+        local new_left="${LBUFFER%\ } $branch"
+      else
+        local new_left="$branch"
+      fi
+      BUFFER=${new_left}${RBUFFER}
+      CURSOR=$#BUFFER
+    fi
+}
+zle -N peco-branch
+bindkey '^o' peco-branch
 #======
 
 #===git===
+
+#親ブランチ情報を取得する
+function get_parent_branch() {
+  parent_branch=`git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -1 | awk -F'[]~^[]' '{print $2}'`
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd get_parent_branch
+
 # VCSの情報を取得するzshの便利関数 vcs_infoを使う
 autoload -Uz vcs_info
 autoload -Uz colors
@@ -126,7 +152,7 @@ zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
 zstyle ':vcs_info:git:*' formats '%F{green}%c%u[%b]%f'
 zstyle ':vcs_info:git:*' actionformats '[%b|%a]'
 
-PROMPT="%{${fg[white]}%} (%*) %{${fg[magenta]}%} %M %{${fg[cyan]}%} %~ %{${reset_color}%}\$vcs_info_msg_0_
+PROMPT="%{${fg[white]}%} (%*) %{${fg[magenta]}%} %M %{${fg[cyan]}%} %~ \$vcs_info_msg_0_ <- %{${fg[yellow]}%}(\$parent_branch)%{${reset_color}%}
 %(?|%{${fg[green]}%}♪ Ｌ( ＾ω ＾ %)┘ Ｌ( ＾ω ＾ %)┘♪|%{${fg[red]}%}♪ Ｌ( ；ω ； %)┘ Ｌ( ；ω ； %)┘♪)%{${reset_color}%} $ "
 
 RPROMPT="%{$fg[white]%(?..$bg[red])%} \$history[\$((\$HISTCMD-1))] %{$reset_color%}"
@@ -135,16 +161,27 @@ RPROMPT="%{$fg[white]%(?..$bg[red])%} \$history[\$((\$HISTCMD-1))] %{$reset_colo
 #===PATH関連===
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/.anyenv/envs/goenv/gocode
-export PATH=$PATH:$GOPATH/bin
+export GOROOT=`go env GOROOT`
+export GOPATH=$HOME
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 if [ -x "`which direnv`" ]; then
         eval "$(direnv hook zsh)"
 fi
 #======
 
 # z.shのインストール
-source ~/.zsh.d/z.sh
+source ~/.zsh.d/z/z.sh
 
 #.zshrc.localの読み込み
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+function git-branch () {
+    if [ $# = 0 -o $# = 1 ]; then
+        echo "引数を'親ブランチ 子ブランチ'で指定してね！"
+    else
+        git checkout $1
+        git branch $2
+        git checkout $2
+    fi
+}
+alias git-branch='git-branch'
